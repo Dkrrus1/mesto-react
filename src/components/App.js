@@ -16,7 +16,7 @@ function App() {
     avatar: '',
   });
   const [cards, setCards] = React.useState([]);
-  const [selectedCard, setSelectedCard] = React.useState('');
+  const [selectedCard, setSelectedCard] = React.useState({});
 
   const openProfileEdit = () => { setIsEditProfilePopupOpen(true) };
   const openAvatarEdit = () => { setIsEditAvatarPopupOpen(true) };
@@ -25,10 +25,10 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setSelectedCard('');
+    setSelectedCard({});
   }
-  const handleCardClick = (getCard) => {
-    setSelectedCard(getCard);
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
   }
 
   useEffect(() => {

@@ -18,9 +18,9 @@ export function Main({ onEditProfile, onAddPlace, onEditAvatar, userInfo, cards,
                 <button type="button" className="profile__add-button" aria-label="Добавить фото" onClick={onAddPlace}></button>
             </section>
             <section className="cards">
-                <ul className="cards__grid">
+                <div className="cards__grid">
                     {cards.map((card) => <Card key={card._id} card={card} onCardClick={onCardClick}/>)}
-                </ul>
+                </div>
             </section>
         </main>
     )

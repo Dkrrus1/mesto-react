@@ -3,8 +3,7 @@ export function Card({ card, onCardClick }) {
         onCardClick(card);
     }
     return (
-        <>
-            <li className="card">
+            <div className="card">
                 <img src={card.link} className="card__image" alt={card.name} onClick={handleClick} />
                 <button type="button" className="card__trash-button" aria-label="Удалить карточку"></button>
                 <div className="card__description">
@@ -14,7 +13,6 @@ export function Card({ card, onCardClick }) {
                         <span className="card__like-count">{card.likes.length}</span>
                     </div>
                 </div>
-            </li>
-        </>
+            </div>
     )
 }
