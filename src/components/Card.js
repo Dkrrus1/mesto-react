@@ -1,8 +1,11 @@
-export function Card({ card }) {
+export function Card({ card, onCardClick }) {
+    function handleClick() {
+        onCardClick(card);
+    }
     return (
         <>
             <li className="card">
-                <img src={card.link} className="card__image" alt={card.name} />
+                <img src={card.link} className="card__image" alt={card.name} onClick={handleClick} />
                 <button type="button" className="card__trash-button" aria-label="Удалить карточку"></button>
                 <div className="card__description">
                     <h2 className="card__title">{card.name}</h2>

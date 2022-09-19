@@ -1,7 +1,7 @@
 import React from "react"
 import { Card } from "./Card"
 
-export function Main({ onEditProfile, onAddPlace, onEditAvatar, userInfo, cards }) {
+export function Main({ onEditProfile, onAddPlace, onEditAvatar, userInfo, cards, onCardClick }) {
 
     return (
         <main className="content">
@@ -19,7 +19,7 @@ export function Main({ onEditProfile, onAddPlace, onEditAvatar, userInfo, cards 
             </section>
             <section className="cards">
                 <ul className="cards__grid">
-                    {cards.map((card) => <Card key={card._id} card={card} />)}
+                    {cards.map((card) => <Card key={card._id} card={card} onCardClick={onCardClick}/>)}
                 </ul>
             </section>
         </main>

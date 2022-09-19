@@ -1,21 +1,22 @@
 import React, { useEffect } from 'react';
-import '../index.css';
 import { Header } from './Header';
 import { Main } from './Main';
 import { Footer } from './Footer';
 import { PopupWithForm } from './PopupWithForm';
 import { api } from "../utils/Api";
+import { ImagePopup } from './ImagePopup';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [userInfo, setUserInfo] = React.useState({
-    name: "",
-    about: "",
-    avatar: "",
+    name: '',
+    about: '',
+    avatar: '',
   });
   const [cards, setCards] = React.useState([]);
+  const [selectedCard, setSelectedCard] = React.useState('');
 
   const openProfileEdit = () => { setIsEditProfilePopupOpen(true) };
   const openAvatarEdit = () => { setIsEditAvatarPopupOpen(true) };
@@ -24,24 +25,28 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setSelectedCard('');
+  }
+  const handleCardClick = (getCard) => {
+    setSelectedCard(getCard);
   }
 
   useEffect(() => {
-      Promise.all([api.getUserData(), api.getInitialCards()])
-          .then(([userData, cardsData]) => {
-              cardsData.reverse();
-              setUserInfo(userData);
-              setCards(cardsData);
-          })
-          .catch((err) => {
-              console.log(`Ошибка ${err}`);
-          });
+    Promise.all([api.getUserData(), api.getInitialCards()])
+      .then(([userData, cardsData]) => {
+        cardsData.reverse();
+        setUserInfo(userData);
+        setCards(cardsData);
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}`);
+      });
   }, []);
 
   return (
     <div className="page">
       <Header />
-      <Main onEditProfile={openProfileEdit} onAddPlace={openPlaceAdd} onEditAvatar={openAvatarEdit} userInfo={userInfo} cards={cards} />
+      <Main onEditProfile={openProfileEdit} onAddPlace={openPlaceAdd} onEditAvatar={openAvatarEdit} userInfo={userInfo} cards={cards} onCardClick={handleCardClick}/>
       <Footer />
       <PopupWithForm name={'profile-form'} title={'Редактировать профиль'} isOpened={isEditProfilePopupOpen} submitName={'Сохранить'} onClose={closeAllPopups}
         children={<>
@@ -76,6 +81,7 @@ function App() {
         </>}
       />
 
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       <div className="popup popup_confirm-card-delete">
         <div className="popup__container">
           <button type="button" className="popup__container-close-button" aria-label="Закрыть"></button>
