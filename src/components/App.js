@@ -1,29 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../index.css';
 import { Header } from './Header';
 import { Main } from './Main';
 import { Footer } from './Footer';
 import { PopupWithForm } from './PopupWithForm';
+import { api } from "../utils/Api";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [userInfo, setUserInfo] = React.useState({
+    name: "",
+    about: "",
+    avatar: "",
+  });
+  const [cards, setCards] = React.useState([]);
 
   const openProfileEdit = () => { setIsEditProfilePopupOpen(true) };
   const openAvatarEdit = () => { setIsEditAvatarPopupOpen(true) };
   const openPlaceAdd = () => { setIsAddPlacePopupOpen(true) };
-
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
   }
 
+  useEffect(() => {
+      Promise.all([api.getUserData(), api.getInitialCards()])
+          .then(([userData, cardsData]) => {
+              cardsData.reverse();
+              setUserInfo(userData);
+              setCards(cardsData);
+          })
+          .catch((err) => {
+              console.log(`Ошибка ${err}`);
+          });
+  }, []);
+
   return (
     <div className="page">
       <Header />
-      <Main onEditProfile={openProfileEdit} onAddPlace={openPlaceAdd} onEditAvatar={openAvatarEdit} />
+      <Main onEditProfile={openProfileEdit} onAddPlace={openPlaceAdd} onEditAvatar={openAvatarEdit} userInfo={userInfo} cards={cards} />
       <Footer />
       <PopupWithForm name={'profile-form'} title={'Редактировать профиль'} isOpened={isEditProfilePopupOpen} submitName={'Сохранить'} onClose={closeAllPopups}
         children={<>
@@ -67,19 +85,6 @@ function App() {
           </form>
         </div>
       </div>
-      <template id="card">
-        <li className="card">
-          <img src="#" className="card__image" alt="Картинка карточки" />
-          <button type="button" className="card__trash-button" aria-label="Удалить карточку"></button>
-          <div className="card__description">
-            <h2 className="card__title"></h2>
-            <div className="card__like-container">
-              <button type="button" className="card__like-button" aria-label="Поставить лайк"></button>
-              <span className="card__like-count">0</span>
-            </div>
-          </div>
-        </li>
-      </template>
     </div>
   );
 }
