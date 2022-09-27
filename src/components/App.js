@@ -3,6 +3,8 @@ import { Header } from './Header';
 import { Main } from './Main';
 import { Footer } from './Footer';
 import { PopupWithForm } from './PopupWithForm';
+import { EditProfilePopup } from './EditProfilePopup';
+import { EditAvatarPopup } from './EditAvatarPopup';
 import { api } from "../utils/Api";
 import { ImagePopup } from './ImagePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext ';
@@ -39,6 +41,14 @@ function App() {
     setCards((state) => state.filter(c => c._id !== card._id))
   }
 
+  function handleUpdateUser (data) {
+    api.setUserData(data).then((newUserInfo) => { setUserInfo(newUserInfo); closeAllPopups()})
+  }
+
+  function handleAvatarUpdate (link) {
+    api.setUserAvatar(link).then((newUserInfo) => { setUserInfo(newUserInfo); closeAllPopups()})
+  }
+
   useEffect(() => {
     Promise.all([api.getUserData(), api.getInitialCards()])
       .then(([userData, cardsData]) => {
@@ -56,17 +66,8 @@ function App() {
         <Header />
         <Main onEditProfile={openProfileEdit} onAddPlace={openPlaceAdd} onEditAvatar={openAvatarEdit} cards={cards} onCardClick={handleCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
         <Footer />
-        <PopupWithForm name={'profile-form'} title={'Редактировать профиль'} isOpened={isEditProfilePopupOpen} submitName={'Сохранить'} onClose={closeAllPopups}
-          children={<>
-            <input type="text" name="name" id="profile-name" className="edit-form__name popup__input" placeholder="Имя"
-              minLength="2" maxLength="40" required />
-            <span className="popup__input-error profile-name-error">Ошибка</span>
-            <input type="text" name="about" id="profile-profession" className="edit-form__profession popup__input"
-              placeholder="О себе" minLength="2" maxLength="200" required />
-            <span className="popup__input-error profile-profession-error">Ошибка</span>
-          </>}
-        />
-
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleAvatarUpdate}/>
         <PopupWithForm name={'link-form'} title={'Новое место'} isOpened={isAddPlacePopupOpen} submitName={'Сохранить'} onClose={closeAllPopups}
           children={<>
             <input type="text" name="name" id="link-name" className="edit-form__name popup__input" placeholder="Название"
@@ -78,16 +79,7 @@ function App() {
           </>}
         />
 
-        <PopupWithForm name={'confirm-avatar-change'} title={'Обновить аватар'} isOpened={isEditAvatarPopupOpen} submitName={'Сохранить'} onClose={closeAllPopups}
-          children={<>
-            <input type="text" name="name" id="link-name" className="edit-form__name popup__input" placeholder="Название"
-              minLength="2" maxLength="200" required />
-            <span className="popup__input-error link-name-error">Ошибка</span>
-            <input type="url" name="link" id="link-url" className="edit-form__profession popup__input"
-              placeholder="Ссылка на картинку" required />
-            <span className="popup__input-error link-url-error">Ошибка</span>
-          </>}
-        />
+
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         <div className="popup popup_confirm-card-delete">
