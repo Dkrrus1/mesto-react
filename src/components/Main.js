@@ -2,7 +2,7 @@ import React from "react"
 import { Card } from "./Card"
 import { CurrentUserContext } from "../contexts/CurrentUserContext ";
 
-export function Main({ onEditProfile, onAddPlace, onEditAvatar, cards, onCardClick }) {
+export function Main({ onEditProfile, onAddPlace, onEditAvatar, cards, onCardClick, onCardLike, onCardDelete }) {
     const currentUser = React.useContext(CurrentUserContext);
 
     return (
@@ -21,7 +21,7 @@ export function Main({ onEditProfile, onAddPlace, onEditAvatar, cards, onCardCli
             </section>
             <section className="cards">
                 <div className="cards__grid">
-                    {cards.map((card) => <Card key={card._id} card={card} onCardClick={onCardClick}/>)}
+                    {cards.map((card) => <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} />)}
                 </div>
             </section>
         </main>

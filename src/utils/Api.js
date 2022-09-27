@@ -15,14 +15,14 @@ class Api {
     return fetch(`${this.baseUrl}/cards`, {
       headers: this._headers
     })
-    .then(this._errorCheck)
+      .then(this._errorCheck)
   }
 
   getUserData() {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: this._headers
     })
-    .then(this._errorCheck)
+      .then(this._errorCheck)
   }
 
   setUserData(data) {
@@ -34,7 +34,7 @@ class Api {
         about: data.about
       })
     })
-    .then(this._errorCheck)
+      .then(this._errorCheck)
   }
 
   setUserAvatar(link) {
@@ -45,7 +45,7 @@ class Api {
         avatar: link.avatar
       })
     })
-    .then(this._errorCheck)
+      .then(this._errorCheck)
   }
 
   addNewPicture(data) {
@@ -57,30 +57,31 @@ class Api {
         link: data.link
       })
     })
-    .then(this._errorCheck)
-  }
-
-  addLike(id) {
-    return fetch(`${this.baseUrl}/cards/${id}/likes`, {
-      method: "PUT",
-      headers: this._headers
-    })
       .then(this._errorCheck)
   }
 
-  deleteLike(id) {
-    return fetch(`${this.baseUrl}/cards/${id}/likes`, {
-      method: "DELETE",
-      headers: this._headers
-    })
-      .then(this._errorCheck)
+  changeLikeCardStatus(id, isLiked) {
+    if (isLiked) {
+      return fetch(`${this.baseUrl}/cards/${id}/likes`, {
+        method: "PUT",
+        headers: this._headers
+      })
+        .then(this._errorCheck)
+    } else {
+      return fetch(`${this.baseUrl}/cards/${id}/likes`, {
+        method: "DELETE",
+        headers: this._headers
+      })
+        .then(this._errorCheck)
+    }
+
   }
 
   deleteCard(id) {
     return fetch(`${this.baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this._headers
-      })
+    })
       .then(this._errorCheck)
   }
 }
