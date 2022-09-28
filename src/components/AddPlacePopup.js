@@ -1,16 +1,16 @@
 import React from "react";
 import { PopupWithForm } from "./PopupWithForm";
 
-export function AddPlacePopup({ isOpen, onClose, onPlaceAdd }) {
+export function AddPlacePopup({ isOpen, onClose, onPlaceAdd, isRender }) {
     const [placeName, setPlaceName] = React.useState('');
     const [placeUrl, setPlaceUrl] = React.useState('');
-    function handlePlaceName (e) {
+    function handlePlaceName(e) {
         setPlaceName(e.target.value)
     }
-    function handlePlaceUrl (e) {
+    function handlePlaceUrl(e) {
         setPlaceUrl(e.target.value)
     }
-    function handleSubmit (e) {
+    function handleSubmit(e) {
         e.preventDefault();
         onPlaceAdd({
             name: placeName,
@@ -18,7 +18,7 @@ export function AddPlacePopup({ isOpen, onClose, onPlaceAdd }) {
         })
     }
     return (
-        <PopupWithForm name={'link-form'} title={'Новое место'} isOpened={isOpen} submitName={'Сохранить'} onClose={onClose} onSubmit={handleSubmit}
+        <PopupWithForm name={'link-form'} title={'Новое место'} isOpened={isOpen} submitName={isRender ? 'Сохранение...' : 'Сохранить'} onClose={onClose} onSubmit={handleSubmit}
             children={<>
                 <input type="text" name="name" id="link-name" className="edit-form__name popup__input" placeholder="Название"
                     minLength="2" maxLength="200" required value={placeName} onChange={handlePlaceName} />

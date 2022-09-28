@@ -18,7 +18,9 @@ export function Card({ card, onCardClick, onCardLike, onCardDelete }) {
         onCardLike(card, isLiked)
     }
     function handleDeleteClick () {
-        onCardDelete(card)
+        onCardDelete({
+            card: card,
+        });
     }
     return (
         <div className="card">

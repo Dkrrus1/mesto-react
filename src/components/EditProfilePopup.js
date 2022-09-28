@@ -2,7 +2,7 @@ import React from "react";
 import { PopupWithForm } from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext ";
 
-export function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+export function EditProfilePopup({ isOpen, onClose, onUpdateUser, isRender }) {
     const currentUser = React.useContext(CurrentUserContext);
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
@@ -30,7 +30,7 @@ export function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     }, [currentUser]);
 
     return (
-        <PopupWithForm name={'profile-form'} title={'Редактировать профиль'} isOpened={isOpen} submitName={'Сохранить'} onClose={onClose} onSubmit={handleSubmit}
+        <PopupWithForm name={'profile-form'} title={'Редактировать профиль'} isOpened={isOpen} submitName={isRender ? 'Сохранение...' : 'Сохранить'} onClose={onClose} onSubmit={handleSubmit}
             children={<>
                 <input type="text" name="name" id="profile-name" className="edit-form__name popup__input" placeholder="Имя"
                     minLength="2" maxLength="40" required value={name} onChange={handleNameChange} />
