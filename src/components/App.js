@@ -53,28 +53,35 @@ function App() {
   function handleCardLike(card, isLiked) {
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-    });
+    })
+    .catch((err) => console.log(`Ошибка ${err}`));
   }
 
   function handleCardDelete(card) {
     onRenderLoading();
-    api.deleteCard(card.card.card._id).finally(closeAllPopups())
-    setCards((state) => state.filter(c => c._id !== card.card.card._id))
+    api.deleteCard(card.card.card._id).then(() => {
+      setCards((state) => state.filter(c => c._id !== card.card.card._id))
+    })
+    .catch((err) => console.log(`Ошибка ${err}`))
+    .finally(closeAllPopups())
   }
 
   function handleUpdateUser(data) {
     onRenderLoading();
     api.setUserData(data).then((newUserInfo) => { setUserInfo(newUserInfo); closeAllPopups() })
+    .catch((err) => console.log(`Ошибка ${err}`))
   }
 
   function handleAvatarUpdate(link) {
     onRenderLoading();
     api.setUserAvatar(link).then((newUserInfo) => { setUserInfo(newUserInfo); closeAllPopups() })
+    .catch((err) => console.log(`Ошибка ${err}`))
   }
 
   function handlePlaceAdd(card) {
     onRenderLoading();
     api.addNewPicture(card).then((newCard) => { setCards([newCard, ...cards]); closeAllPopups() })
+    .catch((err) => console.log(`Ошибка ${err}`))
   }
 
   useEffect(() => {
